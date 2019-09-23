@@ -13,6 +13,10 @@ var artistSchema = new mongoose.Schema({
         type: String
     },
 
+    image: {
+        type: String
+    },
+    
     age: {
         type: Number
     },

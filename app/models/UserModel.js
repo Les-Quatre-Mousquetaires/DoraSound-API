@@ -22,10 +22,22 @@ var userSchema = new mongoose.Schema({
         }
     },
 
+    avatar: {
+        type: String
+    },
+
+    cover: {
+        type: String
+    },
+
     password: {
         type: String,
         bcrypt: true,
         required: true
+    },
+
+    age: {
+        type: Number
     },
 
     token: {
