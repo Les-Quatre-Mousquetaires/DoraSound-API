@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var timestamps = require('mongoose-timestamp');
+var Schema = mongoose.Schema;
 
 var songSchema = new mongoose.Schema({
     name: {
@@ -28,6 +29,11 @@ var songSchema = new mongoose.Schema({
 
     lyric: {
         type: String
+    },
+
+    creator: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }
 });
 

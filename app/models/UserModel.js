@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var validator = require('validator');
 var bcrypt = require('mongoose-bcrypt');
 var timestamps = require('mongoose-timestamp');
+var Schema = mongoose.Schema;
 
 var userSchema = new mongoose.Schema({
     name: {
@@ -47,6 +48,10 @@ var userSchema = new mongoose.Schema({
     role: {
         type: String,
         default: 'user'
+    },
+
+    songs: {
+        type: [{ type: Schema.Types.ObjectId, ref: 'Song' }]
     }
 });
 

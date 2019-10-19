@@ -15,7 +15,7 @@ passport.use(new JwtStrategy({
     secretOrKey: config.jwt.key
 }, async (payload, done) => {
     try {
-        // Tìm user torng database
+        // Tìm user trong database
         let user = await User.findById(payload.userId);
 
         // Nếu user ko tồn tại, handle it
