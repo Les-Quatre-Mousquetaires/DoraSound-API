@@ -14,18 +14,15 @@ passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: config.jwt.key
 }, async (payload, done) => {
-    // console.log(payload);
     await User.findById({ _id: payload.userId }, function (err, user) {
         if (err) {
             return done(err, false);
         }
         if (user) {
-            // console.log(user);
             return done(null, user);
         }
         else {
             let guestUser = new User({ role: 'guest', email: 'guest@dorasount.tk', name: 'guest' });
-            console.log(guestUser);
             return done(null, guestUser);
         }
 
