@@ -10,23 +10,26 @@ const mailer = require('../commons/email/index');
 const cryptoRandomString = require('crypto-random-string');
 
 // Request using JWT
-passport.use(new JwtStrategy({ 
-    jwtFromRequest: ExtractJwt.fromHeader('authorization'),
+passport.use(new JwtStrategy({
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: config.jwt.key
 }, async (payload, done) => {
-    try {
-        // Tìm user trong database
-        let user = await User.findById(payload.userId);
-
-        // Nếu user ko tồn tại, handle it
-        if (!user) {
-            return done(null, false);
+    // console.log(payload);
+    await User.findById({ _id: payload.userId }, function (err, user) {
+        if (err) {
+            return done(err, false);
         }
-        // nếu ko, return user
-        done(null, user);
-    } catch (err) {
-        done(err, false);
-    }
+        if (user) {
+            // console.log(user);
+            return done(null, user);
+        }
+        else {
+            let guestUser = new User({ role: 'guest', email: 'guest@dorasount.tk', name: 'guest' });
+            console.log(guestUser);
+            return done(null, guestUser);
+        }
+
+    })
 }));
 
 // Login using username && password
@@ -63,7 +66,7 @@ passport.use('googleToken', new GoogleStrategy({
     });
 
     if (!user) {
-        let cryptoString = cryptoRandomString({length: 6, type: 'base64'});
+        let cryptoString = cryptoRandomString({ length: 6, type: 'base64' });
         let newUser = new User({
             email: profile.emails[0].value,
             name: profile.name.familyName + ' ' + profile.name.givenName,
@@ -73,7 +76,7 @@ passport.use('googleToken', new GoogleStrategy({
             to: newUser.email,
             subject: 'Welcome to DoraSound',
             text: '',
-            content:{
+            content: {
                 title: 'Welcome to DoraSound',
                 body1: 'Xin chào mừng bạn đến với DoraSound',
                 body2: 'Đây là mật khẩu đăng nhập DoraSound: <b>' + newUser.password + '</b>',

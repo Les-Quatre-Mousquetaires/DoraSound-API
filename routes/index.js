@@ -7,7 +7,7 @@ var songController = require('../app/controllers/SongsController');
 var passport = require('passport');
 var passportConf = require('../app/middleware/passport');
 
-var middlewareJWT = passport.authenticate('jwt', { session: false });
+var { middlewareJWT } = require('../app/middleware/middlewareJwt');
 
 
 /* GET home page. */
@@ -18,7 +18,7 @@ router.get('/', function (req, res, next) {
 /* ROUTE user page */
 router.route('/users')
   .get(middlewareJWT, userController.index)
-  .post(userController.new);
+  .post(middlewareJWT, userController.new);
 
 router.route('/users/:resourceId')
   .get(middlewareJWT, userController.view)

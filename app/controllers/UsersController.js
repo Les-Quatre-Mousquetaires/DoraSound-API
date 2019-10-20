@@ -61,7 +61,9 @@ module.exports = {
     },
 
     new: (req, res, next) => {
-        let user = new User(req.body);
+        let {permission} = grantPermission('create:user', req.user, null);
+        let {resData} = customFilter(permission, req.body);
+        let user = new User(resData);
         user.save().then(result => {
             res.status(201).send(user);
         }).catch(err => {
