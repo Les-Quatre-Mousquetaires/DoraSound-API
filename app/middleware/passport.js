@@ -14,19 +14,15 @@ passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: config.jwt.key
 }, async (payload, done) => {
-    await User.findById({ _id: payload.userId }, function (err, user) {
-        if (err) {
-            return done(err, false);
-        }
-        if (user) {
-            return done(null, user);
-        }
-        else {
-            let guestUser = new User({ role: 'guest', email: 'guest@dorasount.tk', name: 'guest' });
-            return done(null, guestUser);
-        }
+    // Tìm user trong database
+    let user = await User.findById(payload.userId);
 
-    })
+    // Nếu user ko tồn tại, handle it
+    if (!user) {
+        return done(null, false);
+    }
+    // nếu ko, return user
+    done(null, user);
 }));
 
 // Login using username && password
