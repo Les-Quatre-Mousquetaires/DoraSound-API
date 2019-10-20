@@ -4,11 +4,7 @@ var router = express.Router();
 var userController = require('../app/controllers/UsersController');
 var songController = require('../app/controllers/SongsController');
 
-var passport = require('passport');
-var passportConf = require('../app/middleware/passport');
-
 var { middlewareJWT } = require('../app/middleware/middlewareJwt');
-
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -36,6 +32,5 @@ router.route('/songs/:resourceId')
   .get(songController.view)
   .put(middlewareJWT, songController.update)
   .delete(middlewareJWT, songController.delete);
-
 
 module.exports = router;

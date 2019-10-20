@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var passport = require('./app/middleware/passport');
 
-var indexRouter = require('./routes/index');
+var apiRouter = require('./routes/api');
 var authRouter = require('./routes/auth');
 
 var database = require('./db/database');
@@ -45,7 +45,7 @@ app.disable('x-powered-by');
 
 accesscontrol();
 
-app.use('/api', indexRouter);
+app.use('/api', apiRouter);
 app.use('/auth', authRouter);
 
 // catch 404 and forward to error handler
