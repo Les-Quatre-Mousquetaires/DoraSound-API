@@ -22,6 +22,7 @@ module.exports = {
     },
     email:{
         gmailUsername: process.env.GMAIL_USERNAME,
-        gmailPassword: process.env.GMAIL_PASSWORD
+        gmailPassword: process.env.GMAIL_PASSWORD,
+        imageCover: process.env.IMAGE_COVER
     }
 };
