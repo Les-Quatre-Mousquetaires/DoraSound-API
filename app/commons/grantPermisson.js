@@ -2,10 +2,16 @@ module.exports = {
     /**
      * Return permission của currentUser tương ứng với resource
      * @param {*} grantRequest Bao gồm action và resources. Cú pháp `{action}:{resource}`
-     * @param {*} user 
-     * @param {*} creatorId 
+     * @param {*} user  Current user, nếu chưa login thì tham số truyền vào là null
+     * @param {*} creatorId Đối với các phương thức R|U|D giá trị creator của resource
      */
     grantPermission(grantRequest, user, creatorId) {
+        let permission;
+        if (!user) {
+            permission = { granted: true }
+            return { permission };
+        }
+
         let { _id, role } = user;
         let [action, resource] = grantRequest.split(':');
 
@@ -16,8 +22,6 @@ module.exports = {
         let temp = action + who;
 
         let ac = global.ac;
-
-        let permission;
 
         switch (temp) {
             case 'readOwn':
@@ -48,6 +52,6 @@ module.exports = {
                 permission = false;
                 break;
         }
-        return {permission};
+        return { permission };
     }
 }

@@ -88,7 +88,6 @@ module.exports = {
         let { permission } = grantPermission('update:user', req.user, resourceId);
         if (!permission.granted) next();
         else {
-
             let userBody = req.body;
             let user = await User.findOneAndUpdate(
                 { _id: resourceId },
@@ -105,11 +104,14 @@ module.exports = {
 
     delete: async (req, res, next) => {
         let { resourceId } = req.params;
-        let user = await User.findOneAndDelete({ _id: resourceId }).catch(err => {
-            next();
-        });
-        if (user) {
-            res.status(200).json({ mess: `Deleted user id:${user._id}` });
-        } else next();
+
+        let { permission } = grantPermission('update:user', req.user, resourceId);
+        if (!permission.granted) next();
+        else {
+            let user = await User.findOneAndDelete({ _id: resourceId }).catch(err => { res.status(500).json({ message: err.errmsg }) });
+            if (user)
+                res.status(200).json({ message: `Deleted user id:${user._id}` });
+            else next();
+        }
     },
 }
