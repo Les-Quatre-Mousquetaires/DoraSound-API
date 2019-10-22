@@ -90,3 +90,5 @@ typings/
 .idea
 .vscode
 
+# Ignores upload folder
+/public/resources/

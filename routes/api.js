@@ -5,11 +5,14 @@ var userController = require('../app/controllers/UsersController');
 var songController = require('../app/controllers/SongsController');
 
 var { middlewareJWT } = require('../app/middleware/middlewareJwt');
+var uploader = require('../app/middleware/uploader');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
+
+router.route('/test').post(middlewareJWT, uploader.single('fieldname'));
 
 /* ROUTE user page */
 router.route('/users')

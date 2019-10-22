@@ -50,7 +50,7 @@ module.exports = {
     },
 
     index: async (req, res, next) => {
-        let { permission } = grantPermission('read:user', req.user, null);
+        let { permission } = await grantPermission('read:user', req.user, null);
         if (!permission.granted) next();
 
         let user = await User.find().lean().catch(err => { res.status(500).json({ message: err.errmsg }) });
@@ -61,8 +61,8 @@ module.exports = {
     },
 
     new: (req, res, next) => {
-        let {permission} = grantPermission('create:user', req.user, null);
-        let {resData} = customFilter(permission, req.body);
+        let { permission } = grantPermission('create:user', req.user, null);
+        let { resData } = customFilter(permission, req.body);
         let user = new User(resData);
         user.save().then(result => {
             res.status(201).send(user);
