@@ -91,4 +91,4 @@ typings/
 .vscode
 
 # Ignores upload folder
-/public/resources/
+/public/resources/**

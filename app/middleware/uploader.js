@@ -8,6 +8,7 @@ const { regexString, staticPath, uploadConfig } = require('../../config/index');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         let pathResource = "";
+        
         if (file.originalname.match(regexString.audios_type))
             pathResource += staticPath.audios;
         else if (file.originalname.match(regexString.image_type))
