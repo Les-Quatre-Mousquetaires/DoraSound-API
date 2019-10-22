@@ -31,10 +31,10 @@ module.exports = {
         audios: process.env.RESOURCE_PATH + process.env.AUDIOS_PATH
     },
     regexString: {
-        imageType: process.env.IMAGE_TYPE,
-        audiosType: process.env.AUDIO_TYPE
+        imageType: /\.(jpg|jpeg|png|gif)$/i,
+        audiosType: /\.(mp3|flac|aac|wav|ogg)$/i
     },
     uploadConfig: {
-        uploadFileSize: Number(process.env.UPLOAD_FILE_SIZE)*1048576
+        uploadFileSize: Number(process.env.UPLOAD_FILE_SIZE) * 1048576
     }
 };
