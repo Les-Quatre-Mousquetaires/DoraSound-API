@@ -7,17 +7,14 @@ const { regexString, staticPath, uploadConfig } = require('../../config/index');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-
         if (req.user.role !== 'guest') {
             let pathResource = "";
-            if (regexString.audiosType.test(file.originalname)){
+
+            if (regexString.audiosType.test(file.originalname))
                 pathResource = pathResource.concat(staticPath.audios);
-            }
-                
-            else if (regexString.imageType.test(file.originalname)){
+            else if (regexString.imageType.test(file.originalname))
                 pathResource += staticPath.images;
-            }
-                
+
             pathResource = pathResource.concat('/' + req.user.id);
             desPath = path.join(__dirname, '../../', pathResource);
             if (!fs.existsSync(desPath)) fs.mkdirSync(desPath, { recursive: true });
@@ -38,7 +35,7 @@ const filter = (req, file, cb) => {
 const uploader = multer({
     storage: storage,
     limits: {
-        fieldSize: uploadConfig.uploadFileSize
+        fileSize: uploadConfig.uploadFileSize
     },
     fileFilter: filter
 });
