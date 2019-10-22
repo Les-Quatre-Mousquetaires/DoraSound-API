@@ -12,7 +12,9 @@ router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.route('/test').post(middlewareJWT, uploader.single('fieldname'));
+router.route('/test').post(middlewareJWT, uploader.fields([{name: 'images', count: 2}, {name: 'audios', count: 1}]), (req, res, next) => {
+  res.json({ message: 'ok' });
+});
 
 /* ROUTE user page */
 router.route('/users')
