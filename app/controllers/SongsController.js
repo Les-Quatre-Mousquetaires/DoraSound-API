@@ -19,9 +19,11 @@ module.exports = {
         let { permission } = grantPermission('create:song', req.user, null);
         if (!permission.granted) next();
         else {
+            let storagedName = req.reqFile.filter(file => file.type === 'audio')[0].storagedName;
             let user = await UserModel.findById(req.user._id);
             let song = new SongModel({
                 ...req.body,
+                src: storagedName,
                 creator: user._id
             });
             user.songs = [...user.songs, song._id];

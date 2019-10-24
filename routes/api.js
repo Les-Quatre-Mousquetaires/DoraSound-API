@@ -12,7 +12,7 @@ router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.route('/test').post(middlewareJWT, uploader.fields([{name: 'images', count: 2}, {name: 'audios', count: 1}]), (req, res, next) => {
+router.route('/test').post(middlewareJWT, uploader.fields([{ name: 'images', maxCount: 2 }, { name: 'audios', maxCount: 1 }]), (req, res, next) => {
   res.json({ message: 'ok' });
 });
 
@@ -31,7 +31,7 @@ router.route('/users/:resourceId')
 /* ROUTE song page */
 router.route('/songs')
   .get(songController.index)
-  .post(middlewareJWT, songController.new);
+  .post(middlewareJWT, uploader.fields([{ name: 'imagesUpload', maxCount: 2 }, { name: 'songUpload', maxCount: 1 }]), songController.new);
 
 router.route('/songs/:resourceId')
   .get(songController.view)

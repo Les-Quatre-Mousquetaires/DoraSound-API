@@ -1,7 +1,7 @@
 const multer = require('multer');
-const uniqueString = require('unique-string');
 const path = require('path');
 const fs = require('fs');
+const filetype = require('../commons/filetype');
 
 const { regexString, staticPath, uploadConfig } = require('../../config/index');
 
@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
             else if (regexString.imageType.test(file.originalname))
                 pathResource += staticPath.images;
 
-            pathResource = pathResource.concat('/' + req.user.id);
+            //pathResource = pathResource.concat('/' + req.user.id);
             desPath = path.join(__dirname, '../../', pathResource);
             if (!fs.existsSync(desPath)) fs.mkdirSync(desPath, { recursive: true });
             cb(null, desPath);
@@ -23,7 +23,12 @@ const storage = multer.diskStorage({
         else cb(new Error('You need to log in to upload'), null);
     },
     filename: (req, file, cb) => {
-        cb(null, uniqueString() + path.extname(file.originalname));
+        let { reqFile } = filetype(file);
+        let filesBefore = req.reqFile || [];
+        filesBefore.push(reqFile);
+        req.reqFile = filesBefore;
+
+        cb(null, reqFile.storagedName);
     }
 });
 
