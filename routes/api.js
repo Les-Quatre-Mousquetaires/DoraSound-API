@@ -12,9 +12,9 @@ router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.route('/test').post(middlewareJWT, uploader.fields([{ name: 'images', maxCount: 2 }, { name: 'audios', maxCount: 1 }]), (req, res, next) => {
-  res.json({ message: 'ok' });
-});
+// router.route('/test').post(middlewareJWT, uploader.fields([{ name: 'images', maxCount: 2 }, { name: 'audios', maxCount: 1 }]), (req, res, next) => {
+//   res.json({ message: 'ok' });
+// });
 
 /* ROUTE user page */
 router.route('/users')
@@ -30,12 +30,16 @@ router.route('/users/:resourceId')
 
 /* ROUTE song page */
 router.route('/songs')
-  .get(songController.index)
-  .post(middlewareJWT, uploader.fields([{ name: 'imagesUpload', maxCount: 2 }, { name: 'songUpload', maxCount: 1 }]), songController.new);
+  .get(middlewareJWT, songController.index)
+  .post(middlewareJWT,
+    uploader.fields([{ name: 'imagesUpload', maxCount: 1 }, { name: 'songUpload', maxCount: 1 }]),
+    songController.new);
 
 router.route('/songs/:resourceId')
-  .get(songController.view)
-  .put(middlewareJWT, songController.update)
+  .get(middlewareJWT, songController.view)
+  .patch(middlewareJWT,
+    uploader.fields([{ name: 'imagesUpload', maxCount: 1 }]),
+    songController.update)
   .delete(middlewareJWT, songController.delete);
 
 module.exports = router;

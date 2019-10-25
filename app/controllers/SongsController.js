@@ -3,15 +3,18 @@
 const SongModel = require('../models/SongModel');
 const UserModel = require('../models/UserModel');
 const { grantPermission } = require('../commons/grantPermisson');
+const { customFilter } = require('../commons/objectEditor');
 
 module.exports = {
     index: async (req, res, next) => {
-        let { permission } = grantPermission('read:song', null, null);
+        let { permission } = grantPermission('read:song', req.user, null);
+        console.log(permission.granted);
         if (!permission.granted) next();
         else {
             let songs = await SongModel.find();
             if (songs) {
-                res.status(200).json(songs);
+                let { resData } = customFilter(permission, songs);
+                res.status(200).json(resData);
             } else next();
         }
     },
@@ -20,10 +23,12 @@ module.exports = {
         if (!permission.granted) next();
         else {
             let storagedName = req.reqFile.filter(file => file.type === 'audio')[0].storagedName;
+            let image = req.reqFile.filter(file => file.type === 'image')[0].storagedName;
             let user = await UserModel.findById(req.user._id);
             let song = new SongModel({
                 ...req.body,
                 src: storagedName,
+                image: image,
                 creator: user._id
             });
             user.songs = [...user.songs, song._id];
@@ -48,8 +53,13 @@ module.exports = {
         let { permission } = grantPermission('update:song', req.user, resourceId);
         if (!permission.granted) next();
         else {
-            let songContent = req.body;
-            let song = await SongModel.findByIdAndUpdate({ _id: resourceId }, { $set: songContent }, { new: true });
+            let image = req.reqFile.filter(file => file.type === 'image')[0].storagedName;
+            let songContent = {
+                ...req.body,
+                image: image
+            };
+
+            let song = await SongModel.customUpdate(resourceId, songContent);
             if (song) {
                 res.status(201).json(song);
             } else next();

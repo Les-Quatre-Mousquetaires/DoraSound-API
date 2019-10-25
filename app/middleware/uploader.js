@@ -15,8 +15,7 @@ const storage = multer.diskStorage({
             else if (regexString.imageType.test(file.originalname))
                 pathResource += staticPath.images;
 
-            //pathResource = pathResource.concat('/' + req.user.id);
-            desPath = path.join(__dirname, '../../', pathResource);
+            desPath = path.join(global.appRoot, pathResource);
             if (!fs.existsSync(desPath)) fs.mkdirSync(desPath, { recursive: true });
             cb(null, desPath);
         }

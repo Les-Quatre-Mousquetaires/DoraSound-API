@@ -6,7 +6,7 @@ const User = require('../models/UserModel');
 const config = require('../../config/index');
 
 const { grantPermission } = require('../commons/grantPermisson');
-const { customFilter } = require('../commons/plainObject');
+const { customFilter } = require('../commons/objectEditor');
 
 function getToken(user) {
     let { _id, role } = user;
@@ -91,17 +91,16 @@ module.exports = {
         if (!permission.granted) next();
         else {
             let userBody = req.body;
+            let { resData } = customFilter(permission, userBody);
+
             let user = await User.findOneAndUpdate(
                 { _id: resourceId },
-                { $set: userBody },
+                { $set: resData },
                 { new: true }).catch(err => { res.status(500).json({ message: err.errmsg }) });
-
             if (user) {
-                let { resData } = customFilter(permission, user);
-                res.status(201).json(resData);
+                res.status(201).json(user);
             } else next();
         }
-
     },
 
     delete: async (req, res, next) => {

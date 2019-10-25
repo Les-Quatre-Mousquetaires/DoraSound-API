@@ -15,6 +15,8 @@ var accesscontrol = require('./app/helpers/accesscontrol');
 
 var app = express();
 
+global.appRoot = path.resolve(__dirname);
+
 // view engine setup -> changed to app/views
 app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'ejs');
