@@ -8,7 +8,6 @@ const { customFilter } = require('../commons/objectEditor');
 module.exports = {
     index: async (req, res, next) => {
         let { permission } = grantPermission('read:song', req.user, null);
-        console.log(permission.granted);
         if (!permission.granted) next();
         else {
             let songs = await SongModel.find();
@@ -43,9 +42,12 @@ module.exports = {
     },
     view: async (req, res, next) => {
         let { resourceId } = req.params;
+        let { permission } = grantPermission('update:song', req.user, resourceId);
+        if (!permission.granted) next();
         let song = await SongModel.findById(resourceId);
         if (song) {
-            res.status(200).json(song);
+            let { resData } = customFilter(permission, song);
+            res.status(200).json(resData);
         } else next();
     },
     update: async (req, res, next) => {
@@ -61,7 +63,8 @@ module.exports = {
 
             let song = await SongModel.customUpdate(resourceId, songContent);
             if (song) {
-                res.status(201).json(song);
+                let { resData } = customFilter(permission, song);
+                res.status(201).json(resData);
             } else next();
         }
     },
