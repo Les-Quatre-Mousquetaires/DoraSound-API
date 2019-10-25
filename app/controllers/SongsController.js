@@ -42,7 +42,7 @@ module.exports = {
     },
     view: async (req, res, next) => {
         let { resourceId } = req.params;
-        let { permission } = grantPermission('update:song', req.user, resourceId);
+        let { permission } = grantPermission('read:song', req.user, resourceId);
         if (!permission.granted) next();
         let song = await SongModel.findById(resourceId);
         if (song) {
@@ -70,7 +70,7 @@ module.exports = {
     },
     delete: async (req, res, next) => {
         let { resourceId } = req.params;
-        let { permission } = grantPermission('update:song', req.user, resourceId);
+        let { permission } = grantPermission('delete:song', req.user, resourceId);
         if (!permission.granted) next();
         else {
             let song = await SongModel.findOneAndDelete({ _id: resourceId }).catch(err => { res.status(500).json({ message: err.errmsg }) });
