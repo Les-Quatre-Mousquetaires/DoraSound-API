@@ -16,7 +16,7 @@ var artistSchema = new mongoose.Schema({
     image: {
         type: String
     },
-    
+
     age: {
         type: Number
     },

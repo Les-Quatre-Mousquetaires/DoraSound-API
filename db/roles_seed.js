@@ -32,7 +32,7 @@ var grantsList = [
     { role: 'user', resource: 'song', action: 'update:own', attributes: '*' },
     { role: 'user', resource: 'song', action: 'delete:own', attributes: '*' },
 
-    {role: 'guest', resource: 'song', action: 'read:any', attributes: '*, !__v'}
+    { role: 'guest', resource: 'song', action: 'read:any', attributes: '*, !__v' }
 ];
 
 async function dropAllRoles() {
