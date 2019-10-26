@@ -21,7 +21,13 @@ var categorySchema = new mongoose.Schema({
     songs: [{
         type: Schema.Types.ObjectId,
         ref: 'Song'
-    }]
+    }],
+
+    creator: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }
 
 });
 

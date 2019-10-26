@@ -30,6 +30,12 @@ var albumSchema = new mongoose.Schema({
     songs: [{
         type: Schema.Types.ObjectId,
         ref: 'Song'
+    }],
+
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Comment',
+        required: true
     }]
 
 });

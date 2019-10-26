@@ -40,6 +40,11 @@ var songSchema = new mongoose.Schema({
         ref: 'Album'
     },
 
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
+    }],
+
     creator: {
         type: Schema.Types.ObjectId,
         ref: 'User',
@@ -71,7 +76,7 @@ songSchema.statics = {
                 user.save();
                 resolve(preSong);
             } else {
-                reject({ message: 'not found' });
+                reject({ message: 'Not found' });
             }
 
         });

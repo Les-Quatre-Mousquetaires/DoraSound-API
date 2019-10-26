@@ -33,7 +33,18 @@ var artistSchema = new mongoose.Schema({
     songs: [{
         type: Schema.Types.ObjectId,
         ref: 'Song'
-    }]
+    }],
+
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
+    }],
+
+    creator: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }
 
 });
 
