@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-var userController = require('../app/controllers/UsersController');
 var songController = require('../app/controllers/SongsController');
+var userController = require('../app/controllers/UsersController');
 
 var { middlewareJWT } = require('../app/middleware/middlewareJwt');
 var uploader = require('../app/middleware/uploader');

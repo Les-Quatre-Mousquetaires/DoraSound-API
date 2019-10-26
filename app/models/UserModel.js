@@ -1,9 +1,9 @@
 'use strict'
 
 var mongoose = require('mongoose');
-var validator = require('validator');
 var bcrypt = require('mongoose-bcrypt');
 var timestamps = require('mongoose-timestamp');
+var validator = require('validator');
 var Schema = mongoose.Schema;
 
 var userSchema = new mongoose.Schema({

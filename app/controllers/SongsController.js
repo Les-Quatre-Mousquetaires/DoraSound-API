@@ -1,9 +1,9 @@
 'use strict'
 
-const SongModel = require('../models/SongModel');
-const UserModel = require('../models/UserModel');
 const { grantPermission } = require('../commons/grantPermisson');
 const { customFilter } = require('../commons/objectEditor');
+const SongModel = require('../models/SongModel');
+const UserModel = require('../models/UserModel');
 
 module.exports = {
     index: async (req, res, next) => {

@@ -1,6 +1,6 @@
+const fs = require('fs');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
 const filetype = require('../commons/filetype');
 
 const { regexString, staticPath, uploadConfig } = require('../../config/index');

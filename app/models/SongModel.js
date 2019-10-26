@@ -1,10 +1,10 @@
 'use strict'
 
+var fs = require('fs');
 var mongoose = require('mongoose');
 var timestamps = require('mongoose-timestamp');
-var User = require('./UserModel');
-var fs = require('fs');
 var path = require('path');
+var User = require('./UserModel');
 var { staticPath } = require('../../config/index');
 var Schema = mongoose.Schema;
 
@@ -58,8 +58,11 @@ songSchema.statics = {
     customUpdate(id, values) {
         return new Promise(async (resolve, reject) => {
             let preSong = await this.findById(id).lean();
-            if (values.image && fs.existsSync(path.join(global.appRoot, staticPath.images, preSong.image))) {
-                fs.unlink(path.join(global.appRoot, staticPath.images, preSong.image), () => { });
+            if (values.image) {
+                let pathJoin = path.join(global.appRoot, staticPath.images, preSong.image);
+                fs.exists(pathJoin, (exists) => {
+                    if (exists) fs.unlink(pathJoin, (err) => { });
+                });
             }
             let song = this.findByIdAndUpdate({ _id: id }, { $set: values }, { new: true });
             if (!song) {
@@ -74,6 +77,22 @@ songSchema.statics = {
                 let user = await User.findById(preSong.creator);
                 user.songs = user.songs.filter(ids => ids != id);
                 user.save();
+                if (preSong.src) {
+                    let pathJoin = path.join(global.appRoot, staticPath.audios, preSong.src)
+                    fs.exists(pathJoin, (exists) => {
+                        if (exists) {
+                            fs.unlink(pathJoin, (err) => { });
+                        }
+                    });
+                }
+                if (preSong.image) {
+                    let pathJoin = path.join(global.appRoot, staticPath.images, preSong.image);
+                    fs.exists(pathJoin, (exist) => {
+                        if (exist) {
+                            fs.unlink(pathJoin, (err) => { });
+                        }
+                    });
+                }
                 resolve(preSong);
             } else {
                 reject({ message: 'Not found' });

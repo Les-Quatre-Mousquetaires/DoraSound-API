@@ -1,6 +1,6 @@
-const { regexString } = require('../../config/index');
 const path = require('path');
 const uniqueString = require('unique-string')
+const { regexString } = require('../../config/index');
 
 module.exports = (multerFile) => {
     let reqFile = {};

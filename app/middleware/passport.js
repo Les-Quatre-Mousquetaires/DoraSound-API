@@ -1,13 +1,13 @@
-const passport = require('passport');
-const JwtStrategy = require('passport-jwt').Strategy;
-const LocalStrategy = require('passport-local').Strategy;
-const GoogleStrategy = require('passport-google-plus-token');
-const FacebookStrategy = require('passport-facebook-token');
-const { ExtractJwt } = require('passport-jwt');
-const config = require('../../config/index');
-const User = require('../models/UserModel');
-const mailer = require('../commons/email/index');
 const cryptoRandomString = require('crypto-random-string');
+const passport = require('passport');
+const FacebookStrategy = require('passport-facebook-token');
+const GoogleStrategy = require('passport-google-plus-token');
+const JwtStrategy = require('passport-jwt').Strategy;
+const { ExtractJwt } = require('passport-jwt');
+const LocalStrategy = require('passport-local').Strategy;
+const mailer = require('../commons/email/index');
+const User = require('../models/UserModel');
+const config = require('../../config/index');
 
 // Request using JWT
 passport.use(new JwtStrategy({
