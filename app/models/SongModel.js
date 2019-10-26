@@ -53,7 +53,7 @@ songSchema.statics = {
             if (!song) {
                 return reject({ message: 'not found' });
             } else resolve(song);
-        })
+        });
     }
 }
 
