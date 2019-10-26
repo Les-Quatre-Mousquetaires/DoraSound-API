@@ -18,11 +18,11 @@ var artistSchema = new mongoose.Schema({
         type: [{ type: Schema.Types.ObjectId, ref: 'Category' }]
     },
 
-    avatar: {
+    avatarImage: {
         type: String
     },
 
-    cover: {
+    coverImage: {
         type: String
     },
 
