@@ -1,6 +1,7 @@
 'use strict'
 
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 var timestamps = require('mongoose-timestamp');
 
 var categorySchema = new mongoose.Schema({
@@ -15,7 +16,13 @@ var categorySchema = new mongoose.Schema({
 
     description: {
         type: String
-    }
+    },
+
+    songs: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Song'
+    }]
+
 });
 
 categorySchema.plugin(timestamps);

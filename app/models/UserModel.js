@@ -50,9 +50,16 @@ var userSchema = new mongoose.Schema({
         default: 'user'
     },
 
-    songs: {
-        type: [{ type: Schema.Types.ObjectId, ref: 'Song' }]
-    }
+    songs: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Song'
+    }]
+    ,
+
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
+    }]
 });
 
 userSchema.plugin(bcrypt);

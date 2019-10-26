@@ -1,6 +1,7 @@
 'use strict'
 
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 var timestamps = require('mongoose-timestamp');
 
 var artistSchema = new mongoose.Schema({
@@ -13,7 +14,15 @@ var artistSchema = new mongoose.Schema({
         type: String
     },
 
-    image: {
+    categories: {
+        type: [{ type: Schema.Types.ObjectId, ref: 'Category' }]
+    },
+
+    avatar: {
+        type: String
+    },
+
+    cover: {
         type: String
     },
 
@@ -25,6 +34,7 @@ var artistSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'Song'
     }]
+
 });
 
 artistSchema.plugin(timestamps);

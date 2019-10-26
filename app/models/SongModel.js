@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var timestamps = require('mongoose-timestamp');
+var User = require('./UserModel');
 var fs = require('fs');
 var path = require('path');
 var { staticPath } = require('../../config/index');
@@ -34,9 +35,15 @@ var songSchema = new mongoose.Schema({
         type: String
     },
 
+    album: {
+        type: Schema.Types.ObjectId,
+        ref: 'Album'
+    },
+
     creator: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     }
 });
 
@@ -53,6 +60,20 @@ songSchema.statics = {
             if (!song) {
                 return reject({ message: 'not found' });
             } else resolve(song);
+        });
+    },
+    customDelete(id) {
+        return new Promise(async (resolve, reject) => {
+            let preSong = await this.findByIdAndDelete(id).lean();
+            if (preSong) {
+                let user = await User.findById(preSong.creator);
+                user.songs = user.songs.filter(ids => ids != id);
+                user.save();
+                resolve(preSong);
+            } else {
+                reject({ message: 'not found' });
+            }
+
         });
     }
 }
