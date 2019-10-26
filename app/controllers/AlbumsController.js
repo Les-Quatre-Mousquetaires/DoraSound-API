@@ -55,15 +55,15 @@ module.exports = {
     },
     update: async (req, res, next) => {
         let { resourceId } = req.params;
-        let {permission} = grantPermission('update:album', req.user, resourceId);
-        
-        if(!permission.granted) next();
-        else{
+        let { permission } = grantPermission('update:album', req.user, resourceId);
+
+        if (!permission.granted) next();
+        else {
             let albumBody = customFilter(permission, req.body);
             let image;
-            try{
+            try {
                 image = req.reqFile.filter(files => files.type === 'image')[0].storagedName;
-            }catch(err){
+            } catch (err) {
                 image = undefined;
             }
             let albumContent = {
@@ -73,6 +73,14 @@ module.exports = {
         }
     },
     delete: async (req, res, next) => {
-
+        let { resourceId } = req.params;
+        let { permission } = grantPermission('delete:album', req.user, resourceId);
+        if (!permission.granted) next();
+        else {
+            let album = await Album.customDelete(resourceId);
+            if (album) {
+                res.status(202).json({ message: `Deleted album id: ${album._id}` });
+            } else next();
+        }
     }
 }

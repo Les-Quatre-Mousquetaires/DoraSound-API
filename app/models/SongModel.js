@@ -67,7 +67,7 @@ songSchema.statics = {
             }
             let song = this.findByIdAndUpdate({ _id: id }, { $set: values }, { new: true });
             if (!song) {
-                return reject({ message: 'Not found' });
+                return reject(new Error('Not found'));
             } else resolve(song);
         });
     },
@@ -96,7 +96,7 @@ songSchema.statics = {
                 }
                 resolve(preSong);
             } else {
-                reject({ message: 'Not found' });
+                reject(new Error('Not found'));
             }
 
         });

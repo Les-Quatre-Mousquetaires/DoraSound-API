@@ -94,8 +94,7 @@ module.exports = {
             let song = await Song.customDelete(resourceId).catch(err => { next() });
             if (song) {
                 res.status(202).json({ message: `Deleted song id: ${song._id}` });
-            }
-            else next();
+            } else next();
         }
     }
 }

@@ -51,13 +51,24 @@ albumSchema.statics = {
             }
             let album = this.findByIdAndUpdate({ _id: id }, { $set: values }, { new: true });
             if (!album) {
-                return reject(new Error({ message: 'Not found' }));
+                return reject(new Error('Not found'));
             } else resolve(album);
         });
     },
     customDelete(id) {
         return new Promise(async (resolve, reject) => {
-
+            let preAlbum = await this.findByIdAndUpdate(id).lean();
+            if (preAlbum) {
+                if (preAlbum.image) {
+                    let pathJoin = path.join(global.appRoot, staticPath.images, preAlbum.image);
+                    fs.exists(pathJoin, (exists) => {
+                        if (exists) fs.unlink(pathJoin, (err) => { });
+                    });
+                }
+                resolve(preAlbum);
+            } else {
+                reject(new Error('Not found'));
+            }
         });
     }
 }
