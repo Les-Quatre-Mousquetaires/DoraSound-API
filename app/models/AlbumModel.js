@@ -39,4 +39,27 @@ var albumSchema = new mongoose.Schema({
 
 albumSchema.plugin(timestamps);
 
+albumSchema.statics = {
+    customUpdate(id, values) {
+        return new Promise(async (resolve, reject) => {
+            let preAlbum = await this.findById(id).lean();
+            if (preAlbum.image) {
+                let pathJoin = path.join(global.appRoot, staticPath.images, preAlbum.image);
+                fs.exists(pathJoin, (exists) => {
+                    if (exists) fs.unlink(pathJoin, (err) => { });
+                });
+            }
+            let album = this.findByIdAndUpdate({ _id: id }, { $set: values }, { new: true });
+            if (!album) {
+                return reject(new Error({ message: 'Not found' }));
+            } else resolve(album);
+        });
+    },
+    customDelete(id) {
+        return new Promise(async (resolve, reject) => {
+
+        });
+    }
+}
+
 module.exports = mongoose.model('Album', albumSchema);

@@ -42,10 +42,35 @@ module.exports = {
         }
     },
     view: async (req, res, next) => {
-
+        let { resourceId } = req.params;
+        let { permission } = grantPermission('read:album', req.user, resourceId);
+        if (!permission.granted) next();
+        else {
+            let albums = Album.find().lean();
+            if (albums) {
+                let { resData } = customFilter(permission, albums);
+                res.status(200).json(resData);
+            } else next();
+        }
     },
     update: async (req, res, next) => {
-
+        let { resourceId } = req.params;
+        let {permission} = grantPermission('update:album', req.user, resourceId);
+        
+        if(!permission.granted) next();
+        else{
+            let albumBody = customFilter(permission, req.body);
+            let image;
+            try{
+                image = req.reqFile.filter(files => files.type === 'image')[0].storagedName;
+            }catch(err){
+                image = undefined;
+            }
+            let albumContent = {
+                ...albumBody.resData,
+                image: image
+            }
+        }
     },
     delete: async (req, res, next) => {
 

@@ -68,7 +68,12 @@ module.exports = {
         let { permission } = grantPermission('update:song', req.user, resourceId);
         if (!permission.granted) next();
         else {
-            let image = req.reqFile.filter(file => file.type === 'image')[0].storagedName;
+            let image;
+            try {
+                image = req.reqFile.filter(file => file.type === 'image')[0].storagedName;
+            } catch (err) {
+                image = undefined;
+            }
             let songContent = {
                 ...req.body,
                 image: image
