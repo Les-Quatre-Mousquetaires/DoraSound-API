@@ -19,7 +19,8 @@ var songSchema = new mongoose.Schema({
     },
 
     src: {
-        type: String
+        type: String,
+        required: true
     },
 
     image: {

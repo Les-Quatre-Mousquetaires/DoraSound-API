@@ -3,6 +3,7 @@ var router = express.Router();
 
 var songController = require('../app/controllers/SongsController');
 var userController = require('../app/controllers/UsersController');
+var albumController = require('../app/controllers/AlbumsController');
 
 var { middlewareJWT } = require('../app/middleware/middlewareJwt');
 var uploader = require('../app/middleware/uploader');
@@ -32,14 +33,25 @@ router.route('/users/:resourceId')
 router.route('/songs')
   .get(middlewareJWT, songController.index)
   .post(middlewareJWT,
-    uploader.fields([{ name: 'imagesUpload', maxCount: 1 }, { name: 'songUpload', maxCount: 1 }]),
+    uploader.fields([{ name: 'imageUpload', maxCount: 1 }, { name: 'songUpload', maxCount: 1 }]),
     songController.new);
 
 router.route('/songs/:resourceId')
   .get(middlewareJWT, songController.view)
   .patch(middlewareJWT,
-    uploader.fields([{ name: 'imagesUpload', maxCount: 1 }]),
+    uploader.fields([{ name: 'imageUpload', maxCount: 1 }]),
     songController.update)
   .delete(middlewareJWT, songController.delete);
+
+
+/* ROUTE album page */
+router.route('/albums')
+  .get(middlewareJWT, albumController.index)
+  .post(middlewareJWT, uploader.fields([{ name: 'imageUpload', maxCount: 1 }]), albumController.new);
+
+router.route('/albums/:resourceId')
+  .get(middlewareJWT, albumController.view)
+  .patch(middlewareJWT, uploader.fields([{ name: 'imageUpload' }]), albumController.update)
+  .delete(middlewareJWT, albumController.delete);
 
 module.exports = router;

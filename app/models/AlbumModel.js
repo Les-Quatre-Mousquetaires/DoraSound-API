@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var timestamps = require('mongoose-timestamp');
+var Schema = mongoose.Schema;
 
 var albumSchema = new mongoose.Schema({
     name: {
@@ -11,15 +12,11 @@ var albumSchema = new mongoose.Schema({
 
     image: {
         type: String,
+        default: 'image-album-defaut.jpg'
     },
 
     description: {
         type: String
-    },
-
-    artist: {
-        type: Schema.Types.ObjectId,
-        ref: 'Artist'
     },
 
     creator: {
