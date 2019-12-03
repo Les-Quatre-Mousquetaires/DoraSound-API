@@ -5,5 +5,3 @@ function getRenderEmail(content) {
     return body;
 }
 module.exports = getRenderEmail;
-
-
