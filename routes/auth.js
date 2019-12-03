@@ -1,4 +1,5 @@
 var express = require('express');
+var passport = require('passport');
 var router = express.Router();
 
 var passport = require('passport');
@@ -10,6 +11,7 @@ var middlewareAuthFacebook = passport.authenticate('facebookToken', { session: f
 var userController = require('../app/controllers/UsersController');
 
 router.post('/login', middlewareLogin, userController.login);
+router.get('/google-login', passport.authenticate('google', { scope: ['profile'] }));
 router.post('/google-auth-callback', middlewareAuthGoogle, userController.ggAuth);
 router.post('/facebook-auth-callback', middlewareAuthFacebook, userController.fbAuth);
 
