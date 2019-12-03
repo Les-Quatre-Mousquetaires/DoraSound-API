@@ -1,7 +1,7 @@
 const cryptoRandomString = require('crypto-random-string');
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook-token');
-const GoogleStrategy = require('passport-google-oauth20');
+const GoogleStrategy = require('passport-google-plus-token');
 const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const LocalStrategy = require('passport-local').Strategy;
