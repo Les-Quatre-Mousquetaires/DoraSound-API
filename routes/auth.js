@@ -17,7 +17,7 @@ router.get('/google/redirect', passport.authenticate('google'), userController.g
 router.get('/google', passport.authenticate('google', {
     scope: ['email', 'profile'], session: false
 }), (req, res) => {
-    console.log(req.user);
+    // console.log(req.user);
 });
 
 router.post('/facebook-auth-callback', middlewareAuthFacebook, userController.fbAuth);
