@@ -1,7 +1,7 @@
 const cryptoRandomString = require('crypto-random-string');
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook-token');
-const GoogleStrategy = require('passport-google-oauth20');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const LocalStrategy = require('passport-local').Strategy;
@@ -49,7 +49,8 @@ passport.use(new LocalStrategy({
 // Login using google auth
 passport.use('googleToken', new GoogleStrategy({
     clientID: config.ggAuth.clientID,
-    clientSecret: config.ggAuth.clientSecret
+    clientSecret: config.ggAuth.clientSecret,
+    callbackURL: '/auth/google-auth-callback'
 }, async (accessToken, refreshToken, profile, done) => {
     // console.log('accessToken', accessToken);
     // console.log('refreshToken', refreshToken);

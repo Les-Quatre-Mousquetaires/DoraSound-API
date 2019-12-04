@@ -4,7 +4,7 @@ var router = express.Router();
 var passport = require('passport');
 
 var middlewareLogin = passport.authenticate('local', { session: false });
-var middlewareAuthGoogle = passport.authenticate('googleToken', { session: false });
+var middlewareAuthGoogle = passport.authenticate('googleToken', { session: false, scope: ['profile', 'email'] });
 var middlewareAuthFacebook = passport.authenticate('facebookToken', { session: false });
 
 var userController = require('../app/controllers/UsersController');
