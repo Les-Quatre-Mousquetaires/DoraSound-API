@@ -10,7 +10,7 @@ var middlewareAuthFacebook = passport.authenticate('facebookToken', { session: f
 var userController = require('../app/controllers/UsersController');
 
 router.post('/login', middlewareLogin, userController.login);
-router.post('/google-auth-callback', middlewareAuthGoogle, userController.ggAuth);
-router.post('/facebook-auth-callback', middlewareAuthFacebook, userController.fbAuth);
+router.post('/google-auth-callback', middlewareAuthGoogle, userController.OAuth);
+router.post('/facebook-auth-callback', middlewareAuthFacebook, userController.OAuth);
 
 module.exports = router;

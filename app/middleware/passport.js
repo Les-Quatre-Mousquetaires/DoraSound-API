@@ -91,6 +91,35 @@ passport.use('facebookToken', new FacebookStrategy({
     clientID: config.fbAuth.appID,
     clientSecret: config.fbAuth.appSecret
 }, async (accessToken, refreshToken, profile, done) => {
-    // console.log(profile);
-    return done(null, null);
+    const {_json} = profile;
+
+    let user = await User.findOne({
+        email: _json.email
+    });
+
+    if (!user) {
+        let cryptoString = cryptoRandomString({ length: 6, type: 'base64' });
+        let newUser = new User({
+            email: _json.email,
+            name: _json.name,
+            password: cryptoString
+        });
+        mailObject = {
+            to: newUser.email,
+            subject: 'Welcome to DoraSound',
+            text: '',
+            content: {
+                title: 'Welcome to DoraSound',
+                body1: 'Xin chào mừng bạn đến với DoraSound',
+                body2: 'Đây là mật khẩu đăng nhập DoraSound: <b>' + newUser.password + '</b>',
+                body3: 'Chúc bạn nghe nhạc vui vẻ',
+                body4: 'Xin cảm ơn - Đội ngũ DoraSound.',
+                link: ''
+            }
+        }
+        mailer(mailObject);
+        newUser.save();
+        return done(null, newUser);
+    }
+    return done(null, user);
 }));
