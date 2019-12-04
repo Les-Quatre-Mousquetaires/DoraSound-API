@@ -1,7 +1,7 @@
 const cryptoRandomString = require('crypto-random-string');
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook-token');
-const GoogleStrategy = require('passport-google-plus-token');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
 const LocalStrategy = require('passport-local').Strategy;
@@ -9,6 +9,14 @@ const mailer = require('../commons/email/index');
 const User = require('../models/UserModel');
 const config = require('../../config/index');
 
+
+passport.serializeUser(function (user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+    done(null, user);
+});
 // Request using JWT
 passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -47,13 +55,14 @@ passport.use(new LocalStrategy({
 }));
 
 // Login using google auth
-passport.use('googleToken', new GoogleStrategy({
+passport.use(new GoogleStrategy({
     clientID: config.ggAuth.clientID,
-    clientSecret: config.ggAuth.clientSecret
+    clientSecret: config.ggAuth.clientSecret,
+    callbackURL: '/auth/google/redirect'
 }, async (accessToken, refreshToken, profile, done) => {
     // console.log('accessToken', accessToken);
     // console.log('refreshToken', refreshToken);
-    // console.log('profile', profile);
+    console.log('profile', profile);
     let user = await User.findOne({
         email: profile.emails[0].value
     });

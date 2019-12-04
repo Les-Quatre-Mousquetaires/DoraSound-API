@@ -1,19 +1,26 @@
 var createError = require('http-errors');
 var express = require('express');
+
+var app = express();
+
 var path = require('path');
 // var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
+require('./app/middleware/passport');
+app.use(passport.initialize());
 var logger = require('morgan');
-var passport = require('./app/middleware/passport');
+
 
 var apiRouter = require('./routes/api');
 var authRouter = require('./routes/auth');
+
 
 var database = require('./db/database');
 
 var accesscontrol = require('./app/helpers/accesscontrol');
 
-var app = express();
+
 
 global.appRoot = path.resolve(__dirname);
 
