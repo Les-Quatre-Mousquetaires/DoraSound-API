@@ -99,6 +99,7 @@ passport.use('facebookToken', new FacebookStrategy({
 
     if (!user) {
         let cryptoString = cryptoRandomString({ length: 6, type: 'base64' });
+        console.log(cryptoString);
         let newUser = new User({
             email: _json.email,
             name: _json.name,
