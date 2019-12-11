@@ -103,7 +103,7 @@ passport.use('facebookToken', new FacebookStrategy({
         let newUser = new User({
             email: _json.email,
             name: _json.name,
-            password: cryptoString
+            password: 'aaaa'
         });
         mailObject = {
             to: newUser.email,
