@@ -4,15 +4,14 @@ var socket_io = require('socket.io');
 var path = require('path');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
+
+require('./db/database');
+var accesscontrol = require('./app/helpers/accesscontrol');
+
 require('./app/middleware/passport');
 
 var apiRouter = require('./routes/api');
 var authRouter = require('./routes/auth');
-
-
-require('./db/database');
-
-var accesscontrol = require('./app/helpers/accesscontrol');
 
 var app = express();
 
