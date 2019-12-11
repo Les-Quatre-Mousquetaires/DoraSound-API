@@ -58,7 +58,6 @@ module.exports = {
     },
 
     new: (req, res, next) => {
-        console.log(req.user);
         let {permission} = grantPermission('create:user', req.user, null);
         let {resData} = customFilter(permission, req.body);
         let user = new User(resData);

@@ -3,7 +3,7 @@ const passport = require('passport');
 const FacebookStrategy = require('passport-facebook-token');
 const GoogleStrategy = require('passport-google-plus-token');
 const JwtStrategy = require('passport-jwt').Strategy;
-const { ExtractJwt } = require('passport-jwt');
+const {ExtractJwt} = require('passport-jwt');
 const LocalStrategy = require('passport-local').Strategy;
 const mailer = require('../commons/email/index');
 const User = require('../models/UserModel');
@@ -30,17 +30,16 @@ passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
 }, async (email, password, done) => {
-    let user = await User.findOne({ email }).select('-__v');
+    let user = await User.findOne({email}).select('-__v');
 
     if (!user) {
         return done(null, false);
     }
 
-    await user.verifyPassword(password).then(valid => {
+    user.verifyPassword(password).then(valid => {
         if (!valid) {
             return done(null, false);
         } else {
-            console.log(JSON.stringify(user, null, 2));
             done(null, user);
         }
     })
@@ -60,13 +59,13 @@ passport.use('googleToken', new GoogleStrategy({
     });
 
     if (!user) {
-        let cryptoString = cryptoRandomString({ length: 6, type: 'base64' });
+        let cryptoString = cryptoRandomString({length: 6, type: 'base64'});
         let newUser = new User({
             email: profile.emails[0].value,
             name: profile.name.familyName + ' ' + profile.name.givenName,
             password: cryptoString
         });
-        newUser.save();
+        await newUser.save();
         let mailObject = {
             to: newUser.email,
             subject: 'Welcome to DoraSound',
@@ -74,14 +73,14 @@ passport.use('googleToken', new GoogleStrategy({
             content: {
                 title: 'Welcome to DoraSound',
                 body1: 'Xin chào mừng bạn đến với DoraSound',
-                body2: 'Đây là mật khẩu đăng nhập DoraSound: <b>' + newUser.password + '</b>',
+                body2: 'Đây là mật khẩu đăng nhập DoraSound: <b>' + cryptoString + '</b>',
                 body3: 'Chúc bạn nghe nhạc vui vẻ',
                 body4: 'Xin cảm ơn - Đội ngũ DoraSound.',
                 link: ''
             }
         }
         mailer(mailObject);
-        newUser.save();
+
         return done(null, newUser);
     }
     return done(null, user);
@@ -100,14 +99,13 @@ passport.use('facebookToken', new FacebookStrategy({
     });
 
     if (!user) {
-        let cryptoString = cryptoRandomString({ length: 6, type: 'base64' });
-        console.log(cryptoString);
+        let cryptoString = cryptoRandomString({length: 6, type: 'base64'});
         let newUser = new User({
             email: _json.email,
             name: _json.name,
             password: cryptoString
         });
-        newUser.save();
+        await newUser.save();
         let mailObject = {
             to: newUser.email,
             subject: 'Welcome to DoraSound',
@@ -115,7 +113,7 @@ passport.use('facebookToken', new FacebookStrategy({
             content: {
                 title: 'Welcome to DoraSound',
                 body1: 'Xin chào mừng bạn đến với DoraSound',
-                body2: 'Đây là mật khẩu đăng nhập DoraSound: <b>' + newUser.password + '</b>',
+                body2: 'Đây là mật khẩu đăng nhập DoraSound: <b>' + cryptoString + '</b>',
                 body3: 'Chúc bạn nghe nhạc vui vẻ',
                 body4: 'Xin cảm ơn - Đội ngũ DoraSound.',
                 link: ''
