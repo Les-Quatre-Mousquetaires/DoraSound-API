@@ -40,6 +40,7 @@ passport.use(new LocalStrategy({
         if (!valid) {
             return done(null, false);
         } else {
+            console.log(JSON.stringify(user, null, 2));
             done(null, user);
         }
     })
