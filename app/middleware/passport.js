@@ -65,7 +65,8 @@ passport.use('googleToken', new GoogleStrategy({
             name: profile.name.familyName + ' ' + profile.name.givenName,
             password: cryptoString
         });
-        mailObject = {
+        newUser.save();
+        let mailObject = {
             to: newUser.email,
             subject: 'Welcome to DoraSound',
             text: '',
@@ -103,9 +104,10 @@ passport.use('facebookToken', new FacebookStrategy({
         let newUser = new User({
             email: _json.email,
             name: _json.name,
-            password: 'aaaa'
+            password: cryptoString
         });
-        mailObject = {
+        newUser.save();
+        let mailObject = {
             to: newUser.email,
             subject: 'Welcome to DoraSound',
             text: '',
@@ -119,7 +121,6 @@ passport.use('facebookToken', new FacebookStrategy({
             }
         }
         mailer(mailObject);
-        newUser.save();
         return done(null, newUser);
     }
     return done(null, user);
