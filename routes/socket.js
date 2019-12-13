@@ -2,10 +2,18 @@ var express = require('express');
 var router = express.Router();
 
 module.exports = (io) => {
-    io.on('connection', (socket)=> {
+    io.on('connection', (socket) => {
         console.log('new user connected');
-        socket.on('BN9ziWLi4nIzkuRK', data => {
-            io.emit('BN9ziWLi4nIzkuRK', data);
+        socket.on('clientSendDataObject', data => {
+            console.log(data);
+            switch (data.command) {
+                case 'TRANSFER_COMMENTS':
+                    io.emit('serverSendDataObject', data);
+                    break;
+                default:
+                    break;
+            }
+
         });
     })
     return router;
