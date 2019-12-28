@@ -36,7 +36,7 @@ module.exports = (io) => {
         };
 
         console.log('new user connected');
-        io.emit('TRANSFER_VOTING', await calculateVoting());
+        io.emit('serverSendDataObject', await calculateVoting());
         socket.on('clientSendDataObject', async (data) => {
             console.log(data);
             switch (data.command) {
@@ -63,7 +63,7 @@ module.exports = (io) => {
                     await Song.findByIdAndUpdate({ _id: song._id },
                         { $set: resData },
                         { new: true });
-                    io.emit('TRANSFER_VOTING', await calculateVoting());
+                    io.emit('serverSendDataObject', await calculateVoting());
                     break;
                 default:
                     break;
