@@ -53,8 +53,12 @@ var userSchema = new mongoose.Schema({
     songs: [{
         type: Schema.Types.ObjectId,
         ref: 'Song'
-    }]
-    ,
+    }],
+
+    songVoted: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Song'
+    }],
 
     comments: [{
         type: Schema.Types.ObjectId,

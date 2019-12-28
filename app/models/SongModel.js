@@ -41,6 +41,11 @@ var songSchema = new mongoose.Schema({
         ref: 'Album'
     },
 
+    voters: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+
     comments: [{
         type: Schema.Types.ObjectId,
         ref: 'Comment'
