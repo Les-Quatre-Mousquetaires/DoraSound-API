@@ -20,7 +20,7 @@ module.exports = (io) => {
             //         {new: true});
             // });
             songs = songs.map(song => {
-                let point = song.voters.length / Math.pow((moment().subtract(song.updatedAt).unix() / 3600000), 0.64);
+                let point = song.voters.length / Math.pow((moment().subtract(song.createdAt).unix() / 3600000), 0.64);
                 return {
                     ...song,
                     point: point
@@ -45,7 +45,7 @@ module.exports = (io) => {
                     break;
                 case 'TRANSFER_VOTING':
                     let voters = [];
-                    let song = await Song.findById(data.payload.songId).select('voters updatedAt');
+                    let song = await Song.findById(data.payload.songId).select('voters createdAt');
                     voters = [...song.voters];
                     if (data.payload.voteUp == true) {
                         voters = JSON.parse(JSON.stringify(voters));
