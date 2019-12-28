@@ -29,7 +29,10 @@ module.exports = (io) => {
             let _songs = JSON.parse(JSON.stringify(songs));
             let _results = _.orderBy(_songs, ['point'], ['desc']);
             _results.splice(10, _results.length - 10);
-            return _results;
+            return {
+                command: 'TRANSFER_VOTING',
+                payload: _results
+            };
         };
 
         console.log('new user connected');
